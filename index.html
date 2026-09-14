@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Achuthanand Madanapalli — AI Engineering &amp; Software</title>
+<meta name="description" content="Portfolio of Achuthanand (Anand) Madanapalli — CMU MS in AI Engineering (Information Security), GMU BS Computer Science." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     DESIGN TOKENS — change colors/fonts here and they apply everywhere
+     ============================================================ */
+  :root {
+    --bg: #0d0f13;
+    --panel: #151821;
+    --panel-border: #262b36;
+    --panel-border-hover: #3a4152;
+    --text: #eceef2;
+    --text-muted: #8d95a6;
+    --accent: #5b8cff;
+    --accent-dim: rgba(91, 140, 255, 0.14);
+
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+
+    --max-width: 960px;
+    --radius: 8px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  h1, h2, h3 { font-family: var(--font-display); margin: 0; }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* ============================================================
+     NAV
+     ============================================================ */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(13, 15, 19, 0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+  }
+
+  .nav-mark {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--accent);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-links { display: none; }
+  @media (min-width: 640px) {
+    .nav-links { display: flex; }
+  }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero {
+    padding: 72px 0 56px;
+    display: grid;
+    gap: 32px;
+  }
+
+  @media (min-width: 780px) {
+    .hero { grid-template-columns: 1.4fr 1fr; align-items: start; padding-top: 96px; }
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 46px);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-role {
+    color: var(--text-muted);
+    font-size: 18px;
+    margin-top: 16px;
+    max-width: 44ch;
+  }
+
+  .hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .btn {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 18px;
+    border-radius: var(--radius);
+    border: 1px solid var(--panel-border);
+    transition: border-color 0.15s ease, color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn:hover { border-color: var(--panel-border-hover); }
+
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0d0f13;
+    font-weight: 600;
+  }
+
+  .btn-primary:hover { border-color: var(--accent); opacity: 0.9; }
+
+  /* status panel — the one deliberate "moment" on the page */
+  .status-panel {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+
+  .status-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--panel-border);
+    color: var(--text-muted);
+  }
+
+  .status-row:last-child { border-bottom: none; }
+
+  .status-row span:last-child { color: var(--text); text-align: right; }
+
+  .status-row.live span:last-child { color: var(--accent); }
+
+  .cursor {
+    display: inline-block;
+    width: 7px;
+    height: 13px;
+    background: var(--accent);
+    margin-left: 6px;
+    animation: blink 1s steps(1) infinite;
+    vertical-align: -2px;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ============================================================
+     SECTION SHELL
+     ============================================================ */
+  section { padding: 56px 0; border-top: 1px solid var(--panel-border); }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 32px;
+  }
+
+  .section-head h2 { font-size: 22px; font-weight: 600; }
+
+  .section-tag { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+
+  .about p { color: var(--text-muted); max-width: 68ch; font-size: 16px; }
+
+  /* ============================================================
+     PROJECTS
+     ============================================================ */
+  .project-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 700px) {
+    .project-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .project-card {
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius);
+    padding: 22px;
+    background: var(--panel);
+    transition: border-color 0.15s ease;
+  }
+
+  .project-card:hover { border-color: var(--panel-border-hover); }
+
+  .project-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+
+  .project-card p {
+    color: var(--text-muted);
+    font-size: 14.5px;
+    margin: 0 0 14px;
+  }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--accent);
+    border: 1px solid var(--accent-dim);
+    background: var(--accent-dim);
+    padding: 3px 9px;
+    border-radius: 4px;
+  }
+
+  /* ============================================================
+     SKILLS
+     ============================================================ */
+  .skills-grid {
+    display: grid;
+    gap: 28px;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 700px) {
+    .skills-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .skill-group h3 {
+    font-size: 13px;
+    text-transform: none;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-weight: 400;
+    margin-bottom: 14px;
+  }
+
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .skill-tag {
+    font-size: 13.5px;
+    padding: 6px 12px;
+    border: 1px solid var(--panel-border);
+    border-radius: 5px;
+    color: var(--text);
+  }
+
+  /* ============================================================
+     EXPERIENCE (timeline)
+     ============================================================ */
+  .timeline { position: relative; padding-left: 24px; }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: var(--panel-border);
+  }
+
+  .timeline-item { position: relative; padding-bottom: 32px; }
+  .timeline-item:last-child { padding-bottom: 0; }
+
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -24px;
+    top: 5px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .timeline-date {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--accent);
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .timeline-item h3 { font-size: 16.5px; font-weight: 600; }
+  .timeline-item .org { color: var(--text-muted); font-size: 14px; margin-bottom: 10px; }
+
+  .timeline-item ul {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--text-muted);
+    font-size: 14.5px;
+  }
+
+  .timeline-item li { margin-bottom: 4px; }
+
+  /* ============================================================
+     HONORS
+     ============================================================ */
+  .honors-list {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 700px) {
+    .honors-list { grid-template-columns: 1fr 1fr; }
+  }
+  .honor-item {
+    font-size: 14.5px;
+    color: var(--text-muted);
+    padding: 12px 14px;
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius);
+  }
+  .honor-item strong { color: var(--text); font-weight: 500; }
+
+  /* ============================================================
+     CONTACT / FOOTER
+     ============================================================ */
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  footer {
+    border-top: 1px solid var(--panel-border);
+    padding: 28px 0 40px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-family: var(--font-mono);
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAV
+       ============================================================ -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <span class="nav-mark">AM_</span>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+
+    <!-- ============================================================
+         HERO
+         ============================================================ -->
+    <header class="hero">
+      <div>
+        <div class="hero-eyebrow">AI Engineering · Information Security</div>
+        <h1>Achuthanand Madanapalli</h1>
+        <p class="hero-role">
+          MS student in AI Engineering at Carnegie Mellon, building full-stack
+          and applied ML systems — from a scikit-learn protein classifier to
+          production-style web apps in React and Next.js.
+        </p>
+        <div class="hero-links">
+          <!-- Replace resume.pdf with your actual file once it's hosted alongside this page -->
+          <a class="btn btn-primary" href="resume.pdf" download>Download Résumé</a>
+          <a class="btn" href="mailto:amadanapalli6166@gmail.com">Email</a>
+          <a class="btn" href="#" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="#" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+
+      <div class="status-panel">
+        <div class="status-row live">
+          <span>STATUS</span>
+          <span>Open to Summer 2027 internships<span class="cursor"></span></span>
+        </div>
+        <div class="status-row">
+          <span>FOCUS</span>
+          <span>AI Systems &amp; Security</span>
+        </div>
+        <div class="status-row">
+          <span>EDUCATION</span>
+          <span>MS '28 · BS '25</span>
+        </div>
+        <div class="status-row">
+          <span>BASE</span>
+          <span>Pittsburgh, PA</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================================
+         ABOUT
+         ============================================================ -->
+    <section id="about" class="about">
+      <div class="section-head">
+        <h2>About</h2>
+        <span class="section-tag">01</span>
+      </div>
+      <p>
+        I'm a Master's student in AI Engineering (Information Security track) at
+        Carnegie Mellon, graduating May 2028, following a BS in Computer Science
+        from George Mason University's Honors College (GPA 3.73). My work spans
+        full-stack development with React, Next.js, and TypeScript, and applied
+        machine learning with PyTorch and scikit-learn — most recently a course
+        recommendation engine that reached 89% accuracy. I'm looking for a
+        Summer 2027 internship in AI engineering, software engineering, or
+        security, where I can help build systems that are both production-ready
+        and trustworthy.
+      </p>
+    </section>
+
+    <!-- ============================================================
+         PROJECTS
+         ============================================================ -->
+    <section id="projects">
+      <div class="section-head">
+        <h2>Projects</h2>
+        <span class="section-tag">02</span>
+      </div>
+      <div class="project-grid">
+
+        <div class="project-card">
+          <h3>Recommendation Engine</h3>
+          <p>
+            Predicted course drop-off and sign-up rates and built a
+            recommendation engine comparing Logistic Regression, Decision Tree,
+            Random Forest, and XGBoost — reaching 89% accuracy on held-out data.
+          </p>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">scikit-learn</span>
+            <span class="tag">XGBoost</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <h3>Protein Classifier</h3>
+          <p>
+            A protein subcellular localization classifier using sequence-derived
+            features extracted with BioPython, evaluated across Logistic
+            Regression and SVM (linear &amp; RBF) using accuracy, F1, and AUC.
+          </p>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">scikit-learn</span>
+            <span class="tag">BioPython</span>
+            <span class="tag">Pandas</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <h3>SpendFlow</h3>
+          <p>
+            An AI-driven expense tracker with secure Clerk authentication,
+            MongoDB storage, and personalized budgeting insights behind a
+            responsive Tailwind UI.
+          </p>
+          <div class="tag-row">
+            <span class="tag">Next.js</span>
+            <span class="tag">MongoDB</span>
+            <span class="tag">Tailwind CSS</span>
+            <span class="tag">Clerk</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <h3>GradeMe</h3>
+          <p>
+            Led a 3-sprint Agile team building a grade calculator with account
+            creation and multi-class grade storage, with Jest coverage on
+            critical application logic.
+          </p>
+          <div class="tag-row">
+            <span class="tag">JavaScript</span>
+            <span class="tag">PHP</span>
+            <span class="tag">Jest</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SKILLS
+         ============================================================ -->
+    <section id="skills">
+      <div class="section-head">
+        <h2>Skills</h2>
+        <span class="section-tag">03</span>
+      </div>
+      <div class="skills-grid">
+
+        <div class="skill-group">
+          <h3>// Languages</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">TypeScript</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">C</span>
+            <span class="skill-tag">C#</span>
+            <span class="skill-tag">C++</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">HTML</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <h3>// Frameworks &amp; Libraries</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">Next.js</span>
+            <span class="skill-tag">Tailwind CSS</span>
+            <span class="skill-tag">PyTorch</span>
+            <span class="skill-tag">scikit-learn</span>
+            <span class="skill-tag">Pandas</span>
+            <span class="skill-tag">NumPy</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <h3>// Tools &amp; Platforms</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">MongoDB</span>
+            <span class="skill-tag">Unix</span>
+            <span class="skill-tag">JUnit</span>
+            <span class="skill-tag">Jest</span>
+            <span class="skill-tag">Vitest</span>
+            <span class="skill-tag">AWS</span>
+            <span class="skill-tag">GCP</span>
+            <span class="skill-tag">Agile</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         EXPERIENCE
+         ============================================================ -->
+    <section id="experience">
+      <div class="section-head">
+        <h2>Experience</h2>
+        <span class="section-tag">04</span>
+      </div>
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <span class="timeline-date">Aug 2024 — Dec 2025</span>
+          <h3>Undergraduate Teaching Assistant</h3>
+          <div class="org">George Mason University</div>
+          <ul>
+            <li>Supported Software Engineering students, building JAR files and database-integrated models for course projects.</li>
+            <li>Advised students in CS 367 (Computer Systems and Programming) on coursework and project design.</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">Aug 2024 — Aug 2025</span>
+          <h3>Software Developer Intern</h3>
+          <div class="org">Envisn Inc.</div>
+          <ul>
+            <li>Analyzed and improved system integrations and migration strategies for the NetVisn product.</li>
+            <li>Participated across the full agile cycle — design, implementation, and deployment.</li>
+            <li>Explored improvements to data quality and application reliability.</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <span class="timeline-date">May 2025 — Jul 2025</span>
+          <h3>AI-Powered Data Insights Intern</h3>
+          <div class="org">Excelerate</div>
+          <ul>
+            <li>Led a project team, delivering assignments on schedule.</li>
+            <li>Built the final project and presentation demonstrating improvements to a signup program, with actionable recommendations.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         HONORS
+         ============================================================ -->
+    <section id="honors">
+      <div class="section-head">
+        <h2>Honors &amp; Certifications</h2>
+        <span class="section-tag">05</span>
+      </div>
+      <div class="honors-list">
+        <div class="honor-item"><strong>AWS Cloud Practitioner</strong> — Certified</div>
+        <div class="honor-item"><strong>Azure AI Fundamentals</strong> — Certified</div>
+        <div class="honor-item"><strong>Headstarter Fellowship</strong> — Next.js &amp; React project fellowship</div>
+        <div class="honor-item"><strong>Inspirit Innovators AI Fellowship</strong> — ML Track (logistic regression, CNNs, scikit-learn, TensorFlow)</div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CONTACT
+         ============================================================ -->
+    <section id="contact">
+      <div class="section-head">
+        <h2>Contact</h2>
+        <span class="section-tag">06</span>
+      </div>
+      <p class="about" style="margin:0; color: var(--text-muted); max-width: 60ch;">
+        Open to Summer 2027 internships in AI engineering, software engineering,
+        and security. Reach out directly — I read every message myself.
+      </p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="mailto:amadanapalli6166@gmail.com">amadanapalli6166@gmail.com</a>
+        <a class="btn" href="#" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="#" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="wrap">© 2026 Achuthanand Madanapalli</div>
+  </footer>
+
+</body>
+</html>
